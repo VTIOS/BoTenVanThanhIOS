@@ -46,73 +46,35 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
-local ToDisable = {
-Textures = true,
-VisualEffects = true,
-Parts = true,
-Particles = true,
-Sky = true
-}
+Configuration.Aimbot = ImportedConfiguration["Aimbot"] or false
+Configuration.OnePressAimingMode = ImportedConfiguration["OnePressAimingMode"] or false
+Configuration.AimKey = ImportedConfiguration["AimKey"] or "RMB"
+Configuration.AimMode = ImportedConfiguration["AimMode"] or "Camera"
+Configuration.SilentAimMethods = ImportedConfiguration["SilentAimMethods"] or { "Mouse.Hit / Mouse.Target", "GetMouseLocation" }
+Configuration.SilentAimChance = ImportedConfiguration["SilentAimChance"] or 100
+Configuration.OffAimbotAfterKill = ImportedConfiguration["OffAimbotAfterKill"] or false
+Configuration.AimPartDropdownValues = ImportedConfiguration["AimPartDropdownValues"] or { "Head", "HumanoidRootPart" }
+Configuration.AimPart = ImportedConfiguration["AimPart"] or "HumanoidRootPart"
+Configuration.RandomAimPart = ImportedConfiguration["RandomAimPart"] or false
 
-local ToEnable = {
-FullBright = false
-}
+Configuration.UseOffset = ImportedConfiguration["UseOffset"] or false
+Configuration.OffsetType = ImportedConfiguration["OffsetType"] or "Static"
+Configuration.StaticOffsetIncrement = ImportedConfiguration["StaticOffsetIncrement"] or 10
+Configuration.DynamicOffsetIncrement = ImportedConfiguration["DynamicOffsetIncrement"] or 10
+Configuration.AutoOffset = ImportedConfiguration["AutoOffset"] or false
+Configuration.MaxAutoOffset = ImportedConfiguration["MaxAutoOffset"] or 50
 
-local Stuff = {}
-
-for _, v in next, game:GetDescendants() do
-if ToDisable.Parts then
-if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
-v.Material = Enum.Material.SmoothPlastic
-table.insert(Stuff, 1, v)
-end
-end
-
-if ToDisable.Particles then
-if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
-v.Enabled = false
-table.insert(Stuff, 1, v)
-end
-end
-
-if ToDisable.VisualEffects then
-if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
-v.Enabled = false
-table.insert(Stuff, 1, v)
-end
-end
-
-if ToDisable.Textures then
-if v:IsA("Decal") or v:IsA("Texture") then
-v.Texture = ""
-table.insert(Stuff, 1, v)
-end
-end
-
-if ToDisable.Sky then
-if v:IsA("Sky") then
-v.Parent = nil
-table.insert(Stuff, 1, v)
-end
-end
-end
-
-game:GetService("TestService"):Message("Effects Disabler Script : Successfully disabled "..#Stuff.." assets / effects. Settings :")
-
-for i, v in next, ToDisable do
-print(tostring(i)..": "..tostring(v))
-end
-
-if ToEnable.FullBright then
-local Lighting = game:GetService("Lighting")
-
-Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-Lighting.FogEnd = math.huge
-Lighting.FogStart = math.huge
-Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-Lighting.Brightness = 5
-Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-Lighting.Outlines = true
+Configuration.UseSensitivity = ImportedConfiguration["UseSensitivity"] or false
+Configuration.Sensitivity = ImportedConfiguration["Sensitivity"] or 50
+Configuration.UseNoise = ImportedConfiguration["UseNoise"] or false
+Configuration.NoiseFrequency = ImportedConfiguration["NoiseFrequency"] or 50
+local function GetPlayerName(String)
+    if typeof(String) == "string" and #String > 0 then
+        for _, _Player in next, Players:GetPlayers() do
+            if string.sub(string.lower(_Player.Name), 1, #string.lower(String)) == string.lower(String) then
+                return _Player.Name
+            end
+        end
+    end
+    return ""
 end
